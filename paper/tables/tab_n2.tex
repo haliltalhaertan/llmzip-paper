@@ -1,0 +1,19 @@
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{LoCoMo contrasts under both document units and both cohorts (95\% intervals).}
+\label{tab:n2}
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{@{}l l l l l@{}}
+\toprule
+& \multicolumn{2}{c}{Project unit} & \multicolumn{2}{c}{External unit} \\
+\cmidrule(lr){2-3}\cmidrule(l){4-5}
+Contrast (FR@3, pp) & rare bucket & all queries & rare bucket & all queries \\
+\midrule
+48 B $-$ 12 B sign & +31.77 [27.58, 35.95] & +19.67 [16.65, 22.90] & +21.03 [18.27, 24.00] & +12.14 [9.76, 14.52] \\
+48 B sign $-$ BM25 & +1.58 [\textminus{}0.73, 3.88] & +1.31 [\textminus{}0.34, 3.05] & \textminus{}1.80 [\textminus{}4.14, 0.57] & \textminus{}0.60 [\textminus{}2.07, 0.78] \\
+full sign $-$ BM25 & \textminus{}3.77 [\textminus{}6.51, \textminus{}0.63] & \textminus{}1.75 [\textminus{}3.61, 0.68] & \textminus{}6.08 [\textminus{}8.46, \textminus{}3.71] & \textminus{}3.57 [\textminus{}5.14, \textminus{}1.98] \\
+48 B standardized $-$ BM25 & +3.02 [0.27, 5.64] & +2.64 [0.81, 4.49] & +1.64 [\textminus{}0.59, 3.89] & +1.76 [0.37, 3.26] \\
+full raw float $-$ BM25 & \textminus{}19.81 [\textminus{}24.20, \textminus{}15.52] & \textminus{}12.36 [\textminus{}15.47, \textminus{}9.50] & \textminus{}2.18 [\textminus{}6.76, 1.75] & \textminus{}0.17 [\textminus{}2.90, 2.45] \\
+\bottomrule
+\end{tabular}\end{adjustbox}
+\end{table}

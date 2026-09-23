@@ -1,0 +1,20 @@
+\begin{table}[tbp]
+\centering
+\small
+\caption{Registry of pre-specified gates. "Min.\ effect" records whether the gate named a minimum useful effect size, not only significance.}
+\label{tab:gates}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.3cm} >{\raggedright\arraybackslash}X l l >{\raggedright\arraybackslash}p{4.4cm}@{}}
+\toprule
+Gate & Criterion (declared before the run) & Min.\ effect & Outcome & Decisive numbers \\
+\midrule
+C3: code first stage, BM25 rerank (2026-09-16) & $\Delta$FR@3 $\geq 1.0$ pp over BM25, CI excluding 0 & yes & not met & LME \textminus{}0.33, PerLTQA +0.33, LoCoMo +1.07 pp (point estimates) \\
+C1: compact code vs BM25, RealTalk (2026-09-20) & some arm $\leq$ 48 B/doc with $\Delta$FR@3 $\geq 2.0$ pp and 95\% CI excluding 0 & yes & fail & 0 of 12 cells positive; best \textminus{}1.11 [\textminus{}2.26, 0.05] pp \\
+Channel ablation (2026-09-21) & drop the character channel only if no benchmark shows a significant FR@3 regression & no & fail & LME \textminus{}3.84, RealTalk \textminus{}2.69 pp, both significant \\
+Vocabulary compaction (2026-09-21) & 0 differing bits, fewer bytes, latency $\leq 1.25\times$ & exactness & pass & 0 of 20{,}540 vectors differ; bytes \textminus{}63.6\% (LoCoMo) \\
+Policy-shaped routing (2026-09-22) & E[T] significantly lower than static code ranking & no & pass (defective) & \textminus{}1.16 [\textminus{}2.22, \textminus{}0.15] docs; closes 9.7\% of the gap to BM25 \\
+Fusion W, weighted RRF (2026-09-23) & LoCoMo E[T] cut $\geq 5$\% with 97.5\% CI below 0; FR@3 lower bound $>$ \textminus{}1.0 pp on all four & yes & fail & E[T] \textminus{}11.0\%; LoCoMo FR@3 \textminus{}3.90 [\textminus{}6.87, \textminus{}0.83] pp \\
+Fusion G, gated switch (2026-09-23) & same as W & yes & fail & E[T] \textminus{}0.30 [\textminus{}1.52, 0.77] docs: no significant difference was demonstrated \\
+\bottomrule
+\end{tabularx}
+\par\smallskip\parbox{\linewidth}{\footnotesize Gates were written into run records before results, but none was hash-committed in advance; see Section~\ref{sec:limits}.}
+\end{table}

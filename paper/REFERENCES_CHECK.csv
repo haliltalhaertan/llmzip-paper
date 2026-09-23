@@ -1,0 +1,26 @@
+key,id,resolved,title,first_author,year
+jegou2012negative,doi:10.1007/978-3-642-33709-3_55,True,Negative Evidences and Co-occurences in Image Retrieval: The Benefit of PCA and Whitening,"Jégou, Hervé",2012
+jegou2011pq,doi:10.1109/tpami.2010.57,True,Product Quantization for Nearest Neighbor Search,"Jégou, H",2011
+gong2013itq,doi:10.1109/tpami.2012.193,True,Iterative Quantization: A Procrustean Approach to Learning Binary Codes for Large-Scale Image Retrieval,"Gong, Yunchao",2013
+ge2014opq,doi:10.1109/tpami.2013.240,True,Optimized Product Quantization,"Ge, Tiezheng",2014
+radenovic2019finetuning,doi:10.1109/tpami.2018.2846566,True,Fine-Tuning CNN Image Retrieval with No Human Annotation,"Radenovic, Filip",2019
+armstrong2009improvements,doi:10.1145/1645953.1646031,True,Improvements that don't add up,"Armstrong, Timothy G.",2009
+lin2019neuralhype,doi:10.1145/3308774.3308781,True,The Neural Hype and Comparisons Against Weak Baselines,"Lin, Jimmy",2019
+gao2024rabitq,doi:10.1145/3654970,True,RaBitQ: Quantizing High-Dimensional Vectors with a Theoretical Error Bound for Approximate Nearest Neighbor Search,"Gao, Jianyang",2024
+charikar2002simhash,doi:10.1145/509907.509965,True,Similarity estimation techniques from rounding algorithms,"Charikar, Moses S.",2002
+datar2004lsh,doi:10.1145/997817.997857,True,Locality-sensitive hashing scheme based on p-stable distributions,"Datar, Mayur",2004
+yamada2021bpr,doi:10.18653/v1/2021.acl-short.123,True,Efficient Passage Retrieval with Hashing for Open-domain Question Answering,"Yamada, Ikuya",2021
+robertson2009bm25,doi:10.1561/1500000019,True,The Probabilistic Relevance Framework: BM25 and Beyond,"Robertson, Stephen",2009
+cormack2009rrf,doi:10.1145/1571941.1572114,True,Reciprocal rank fusion outperforms condorcet and individual rank learning methods,"Cormack, Gordon V.",2009
+brown2010information,doi:10.1287/opre.1090.0796,True,Information Relaxations and Duality in Stochastic Dynamic Programs,"Brown, David B.",2010
+efron1979bootstrap,doi:10.1214/aos/1176344552,True,Bootstrap Methods: Another Look at the Jackknife,"Efron, B.",1979
+mcnemar1947,doi:10.1007/BF02295996,True,Note on the Sampling Error of the Difference Between Correlated Proportions or Percentages,"McNemar, Quinn",1947
+golovin2010adaptive,arXiv:1003.3967,True,Adaptive Submodularity: Theory and Applications in Active Learning and Stochastic Optimization,Daniel Golovin,2010
+wu2024longmemeval,arXiv:2410.10813,True,LongMemEval: Benchmarking Chat Assistants on Long-Term Interactive Memory,Di Wu,2024
+deshpande2013sbfe,arXiv:1303.0726,True,Approximation Algorithms for Stochastic Boolean Function Evaluation and Stochastic Submodular Set Cover,Amol Deshpande,2013
+gao2022hyde,arXiv:2212.10496,True,Precise Zero-Shot Dense Retrieval without Relevance Labels,Luyu Gao,2022
+du2024perltqa,arXiv:2402.16288,True,"PerLTQA: A Personal Long-Term Memory Dataset for Memory Classification, Retrieval, and Synthesis in Question Answering",Yiming Du,2024
+wang2023query2doc,arXiv:2303.07678,True,Query2doc: Query Expansion with Large Language Models,Liang Wang,2023
+hoey2013spudd,arXiv:1301.6704,True,SPUDD: Stochastic Planning using Decision Diagrams,Jesse Hoey,2013
+maharana2024locomo,arXiv:2402.17753,True,Evaluating Very Long-Term Conversational Memory of LLM Agents,Adyasha Maharana,2024
+lee2025realtalk,arXiv:2502.13270,True,REALTALK: A 21-Day Real-World Dataset for Long-Term Conversation,Dong-Ho Lee,2025

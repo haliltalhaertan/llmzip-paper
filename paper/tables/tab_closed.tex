@@ -1,0 +1,19 @@
+\begin{table}[tbp]
+\centering
+\small
+\caption{Routes closed by measurement.}
+\label{tab:closed}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.0cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{5.2cm}@{}}
+\toprule
+Route & Test & Result \\
+\midrule
+Fewer bits: 12 B instead of 48 B per document & 48 B minus 12 B, LoCoMo FR@3 (four cells, all significant) & +31.77 to +12.14 pp \\
+Drop the character channel & channel ablation, four benchmarks & two significant regressions (LME \textminus{}3.84 pp) \\
+Shared hashed encoder, no vocabulary & FR@3 per-archive $\to$ shared & LME 61.48 $\to$ 29.17\% \\
+Code first stage, BM25 rerank & C3 gate & LoCoMo +1.07, LME \textminus{}0.33 pp \\
+Unweighted RRF of BM25 and code & LoCoMo, 2026-09-16 configuration & FR@3 \textminus{}4.79 [\textminus{}7.18, \textminus{}2.34] pp \\
+Code-based adaptive penalty & policy-shaped routing & E[T] \textminus{}1.16 docs; BM25 control rejects it ($\lambda=0$) \\
+Weighted RRF, weight out of fold & fusion gate & LoCoMo FR@3 \textminus{}3.90 pp \\
+\bottomrule
+\end{tabularx}
+\end{table}

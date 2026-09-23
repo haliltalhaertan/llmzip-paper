@@ -1,0 +1,19 @@
+\begin{table}[tbp]
+\centering
+\footnotesize
+\caption{One configuration choice at a time, everything else held fixed. FR@3 differences in pp unless stated. Intervals are 95\% paired, archive-clustered bootstraps except the metric row (97.5\%). $^{\circ}$ interval includes 0: no significant difference was demonstrated.}
+\label{tab:reversals}
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{@{}l >{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{2.2cm} l >{\raggedright\arraybackslash}p{2.2cm} l@{}}
+\toprule
+Choice & Quantity & Setting A & Value A & Setting B & Value B \\
+\midrule
+Document unit & full raw float $-$ BM25, all queries & project unit & \textminus{}12.36 [\textminus{}15.47, \textminus{}9.50] & external unit & \textminus{}0.17 [\textminus{}2.90, 2.45]$^{\circ}$ \\
+Cohort & full sign code $-$ BM25, project unit & rare bucket & \textminus{}3.77 [\textminus{}6.51, \textminus{}0.63] & all queries & \textminus{}1.75 [\textminus{}3.61, 0.68]$^{\circ}$ \\
+Projection family & word-only $-$ all channels, RealTalk & no projection, float & +3.12 [0.08, 6.17] & $k=96$ sign code & \textminus{}2.69 [\textminus{}4.45, \textminus{}0.66] \\
+Benchmark & drop character channel & PerLTQA & +2.40 [1.14, 3.67] & LongMemEval & \textminus{}3.84 [\textminus{}6.88, \textminus{}0.75] \\
+Metric & fusion W $-$ BM25, LoCoMo & E[T], docs (lower is better) & \textminus{}6.95 [\textminus{}10.60, \textminus{}2.94] & FR@3 & \textminus{}3.90 [\textminus{}6.87, \textminus{}0.83] \\
+Tie convention$^{\dagger}$ & external BM25 FR@3, LoCoMo (\%) & deterministic (fr3) & 42.87 & expected over ties (efr3) & 42.96 (+0.09) \\
+\bottomrule
+\end{tabular}\end{adjustbox}
+\par\smallskip\parbox{\linewidth}{\footnotesize $^{\dagger}$ Included for completeness: the tie convention moves the number but reverses no verdict in this programme.}
+\end{table}

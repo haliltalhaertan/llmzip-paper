@@ -1,0 +1,211 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textcomp}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs,tabularx,array}
+\usepackage{adjustbox}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\setlength{\parskip}{3pt}
+\newcommand{\FR}{FR@3}
+\newcommand{\ET}{E[$T$]}
+\newcommand{\labels}{\texttt{[LOCAL EXPLORATORY PILOT] [NOT PREREGISTERED] [NOT FOR CITATION] [DISCLOSE-BEFORE-USE]}}
+
+\title{Twelve Bytes Against an Inverted Index:\\ What a Compact-Code Memory Retrieval Programme Found, and Which Configuration Choices Decided It}
+\author{llmzip programme record, compiled by the programme's head researcher\\ \small \url{https://github.com/haliltalhaertan/llmzip-paper}}
+\date{23 September 2026}
+
+\begin{document}
+\maketitle
+\begin{center}\small\labels\end{center}
+
+\begin{abstract}
+\noindent
+This report collects every result of a local research programme that asked whether a per-document 12-byte (96-bit) code, built from TF-IDF features projected by SVD and binarised, can replace or complement a BM25 index when an agent retrieves evidence from its conversational memory. Four benchmarks were used: LongMemEval-S, LoCoMo, PerLTQA and RealTalk. The programme was not preregistered and has no independent auditor. Its main transferable finding is methodological: five configuration choices each reversed a verdict while everything else was held fixed. These were the document unit, the query cohort, the projection family, the benchmark and the metric. On the product question the answer is negative. No compact budget reached BM25 on the pre-specified RealTalk gate; the best 48-byte cell was \textminus{}1.11 [\textminus{}2.26, 0.05] pp on \FR{}. On LoCoMo the 96-bit code opens 75.20 documents before the first piece of evidence (\ET{}), against 63.17 for BM25 and a floor of 1.00 that the code's bits would allow. Engineering work produced two compactions that change no output bit. The encoder vocabulary shrank by 62.9--63.6\% and the BM25 index by 75.7--77.5\%. Even after both, the encoder still needs 3.51--4.42 times the memory of the compacted BM25. Weighted rank fusion of BM25 with the code failed its pre-specified gate. A fixed fusion weight chosen after the fact lowers \ET{} on all four benchmarks without lowering \FR{}; it remains an unconfirmed lead. The report also lists the programme's 20 supersession entries and eleven errors made and corrected by its head researcher.
+\end{abstract}
+
+\section{Introduction}
+Agents that keep long conversational histories must find the few turns relevant to a question among hundreds. The standard tool is a lexical inverted index scored by BM25~\citep{robertson2009bm25}. Its cost grows with the vocabulary. A tempting alternative is a fixed-size code per document, a few bytes of sign bits in the tradition of similarity hashing~\citep{charikar2002simhash,datar2004lsh} and learned binary codes~\citep{gong2013itq,jegou2011pq,ge2014opq,gao2024rabitq}. Such a code might route a query to its evidence at a small fraction of an index's footprint. The llmzip programme tested that idea on four public long-memory benchmarks~\citep{wu2024longmemeval,maharana2024locomo,du2024perltqa,lee2025realtalk}.
+
+The programme did not find a code that beats BM25. It did find something of more general use, and that is the paper's first subject. Several of its intermediate verdicts turned on configuration choices that are rarely reported: how archive text is cut into documents, which queries are averaged, which projection family an ablation uses, which benchmark is measured and which metric decides. The literature on weak baselines and non-additive improvements~\citep{armstrong2009improvements,lin2019neuralhype} anticipates the general lesson. This record adds five concrete, fully measured instances from one programme.
+
+The paper is written so that every result is visible from the document alone. Every number in the text, tables and figures is generated from a claims ledger of 1{,}221 entries drawn from 51 sources, each traced to a saved artefact with its SHA-256. Section~\ref{sec:setting} describes data and methods. Section~\ref{sec:results} gives the results. Section~\ref{sec:external} reviews two external strands. Section~\ref{sec:limits} discloses the process, including the errors.
+
+\section{Setting, data and methods}\label{sec:setting}
+\subsection{Benchmarks and data policy}
+Table~\ref{tab:benchmarks} lists the four benchmarks. Each archive is one user's conversation history, and retrieval is always within one archive. LongMemEval-S has one question per archive, so its archive-clustered intervals reduce to an unclustered bootstrap over 470 single-query points. RealTalk carries no published licence. It was used locally only, and its data in the repository history is an open publication blocker that the repository owner must resolve.
+
+\input{tables/tab_benchmarks}
+
+\subsection{Retrieval arms}
+Each archive is fitted separately. The \emph{encoder} combines three channels: a word TF-IDF vectorizer (1--2 grams), a character TF-IDF vectorizer (\texttt{char\_wb}, 3--5 grams) and an LSA component. The concatenated representation is projected by a truncated SVD to $k\in\{96,192,384\}$ dimensions or left unprojected (\texttt{NOPROJ}). Documents are stored as $k$ sign bits, so 96 dimensions give 12 bytes per document. Query scoring differs by arm. In \texttt{sym} both sides are binarised. In \texttt{qscale} a scaled float query is scored against binary documents. In \texttt{float} both sides stay real-valued. \texttt{std} and \texttt{raw} denote the float arms with and without per-dimension standardisation. BM25 uses the textbook parameters $k_1=1.2$, $b=0.75$ over the same documents. Two BM25 analysers appear: a coarse one and the production (``frozen'') analyser, which is the stronger comparator.
+
+\subsection{Metrics}
+\FR{} is the expected fraction of a query's $m$ gold documents that appear among the first three results. It is computed in closed form over uniform random shuffling of tied scores, with no Monte-Carlo step. Hit@10 is the probability that at least one gold document appears in the first ten. \ET{} is the expected number of documents opened in the retriever's rank order until the first gold document; lower is better. It is the one metric on which a retriever can be compared with the memory-search lower bound $\mathrm{E}[T]\ge N/(2K)+1/2$, where $K=\min(2^{b},N)$ for $b$ routing bits and $N$ documents. The external review that supplied this bound is described in Section~\ref{sec:codex}. For multi-evidence questions we also report all@5, the fraction of queries whose gold documents all appear in the top five.
+
+\subsection{Inference and gates}
+All contrasts are paired by query. Intervals come from an archive-clustered bootstrap~\citep{efron1979bootstrap}: archives are resampled with replacement and the paired differences of their queries are pooled. The main analyses use 20{,}000 replicates with fixed seeds recorded in each run file. Where two arms were tested against one gate, intervals were widened to 97.5\% (Bonferroni). Hyperparameters were chosen by leave-one-archive-out: the value minimising the objective on the other archives is applied to the held-out one. Every grid contains a no-op value that reproduces the baseline exactly.
+
+A \emph{gate} is a decision rule written into the run record before the numbers were seen. Table~\ref{tab:gates} lists every gate in the programme. The house wording for an interval that contains zero is ``no significant difference was demonstrated''. It is never ``neutral'' or ``equivalent'', because no equivalence margin was declared in advance.
+
+\input{tables/tab_gates}
+
+\subsection{Reproducibility harness}
+A third independent environment (CPython 3.14.7, NumPy 2.5.3, SciPy 1.18.1, scikit-learn 1.9.1 on native Windows) reproduced all 35 of 35 published RealTalk cells. Of 56 evaluations, 51 were exact. The remaining 5 came from one query that flips at the rank-3 boundary under hash-seed-dependent iteration order. That flip moves one BM25 cell between 34.0506 and 34.0790, a difference of 0.0284 pp. Sorting the iteration fixes it. The sealed snapshot's manifest of 821 entries was reissued with 9 changed files and no changed number.
+
+\section{Results}\label{sec:results}
+\subsection{Five configuration choices each reversed a verdict}\label{sec:reversals}
+Table~\ref{tab:reversals} and Figure~\ref{fig:reversals} hold one choice fixed at a time.
+
+\emph{Document unit.} The external package that prompted the LoCoMo audit reported BM25 \FR{} 42.87 on 1{,}531 queries. This project measured 40.96 on 1{,}535 queries, a gap of 1.91 pp. Rebuilding the arms one change at a time located the whole gap in how dialogue text is cut into documents. The document unit alone accounts for 1.92 pp, leaving a residual of \textminus{}0.009 pp (Figure~\ref{fig:reversals}a). Removing the image captions that the project appended to 1{,}226 documents moves BM25 by \textminus{}0.95 pp; adding session timestamps moves it by +2.68 pp. The unit also changes significance. The full raw float arm trails BM25 by \textminus{}12.36 [\textminus{}15.47, \textminus{}9.50] pp under the project unit. Under the external unit the difference is \textminus{}0.17 [\textminus{}2.90, 2.45] pp, and no significant difference was demonstrated.
+
+\emph{Cohort.} The five contrasts in the sealed LoCoMo audit had been computed on a rare-term bucket of 950 queries. They were later quoted as LoCoMo-wide results. Re-running them on all 1{,}535 queries left every direction unchanged but moved magnitudes and significance. The 48-byte minus 12-byte sign contrast falls from +31.77 to +19.67 pp. The full-dimension sign arm's deficit against BM25 is significant in the rare bucket, \textminus{}3.77 [\textminus{}6.51, \textminus{}0.63], but not on all queries, \textminus{}1.75 [\textminus{}3.61, 0.68]. The comparison that mattered for the product claim, 48-byte sign against BM25, is non-significant in all four unit $\times$ cohort cells, and its sign follows the document unit, not the cohort: +1.58, +1.31, \textminus{}1.80 and \textminus{}0.60 pp (Figure~\ref{fig:reversals}b; all cells in Table~\ref{tab:n2}).
+
+\emph{Projection family.} Among unprojected float arms on RealTalk, dropping the character and LSA channels \emph{helped}: \FR{} +3.12 [0.08, 6.17] pp and Hit@10 +8.23 [2.85, 13.80] pp. In the production configuration ($k=96$, sign codes) the same comparison on the same benchmark \emph{hurt}: \textminus{}2.69 [\textminus{}4.45, \textminus{}0.66] pp (Figure~\ref{fig:reversals}c). A lead from the first family would have been a false memory saving in the second.
+
+\emph{Benchmark.} The pre-specified channel ablation removed the character channel at $k=96$. \FR{} changed by \textminus{}3.84 [\textminus{}6.88, \textminus{}0.75] pp on LongMemEval, \textminus{}2.69 on RealTalk and \textminus{}0.52 [\textminus{}2.05, 0.83] on LoCoMo, where no significant difference was demonstrated. On PerLTQA it changed by +2.40 [1.14, 3.67] (Figure~\ref{fig:reversals}d; Table~\ref{tab:channels}). Had only PerLTQA been measured, the channel would have been dropped for a 69\% memory saving, and two benchmarks would have been damaged without anyone noticing. The gate failed and the channel stays.
+
+\emph{Metric.} The weighted-fusion arm of Section~\ref{sec:fusion} lowers LoCoMo \ET{} by 6.95 [2.94, 10.60] documents, a significant improvement. It lowers \FR{} by 3.90 [0.83, 6.87] pp, a significant loss (Figure~\ref{fig:reversals}e). Whether the arm is better depends entirely on which metric is declared primary.
+
+A sixth candidate, the tie convention, is listed in Table~\ref{tab:reversals} for completeness. Reporting deterministic ties (fr3) instead of their expectation (efr3) moves the external BM25 value by +0.09 pp but reverses no verdict. Earlier summaries in the programme counted it among the reversals; that was an overstatement.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig1_reversals.pdf}
+\caption{Five configuration choices, each changed with everything else fixed. (a)~BM25 \FR{} on LoCoMo as the document unit is rebuilt step by step. (b)~LoCoMo contrasts in the four unit $\times$ cohort cells; open markers: the interval includes 0. (c)~Word-only minus all channels on RealTalk, unprojected float against the $k=96$ sign code. (d)~Removing the character channel on four benchmarks (LME = LongMemEval). (e)~Weighted fusion W against BM25: documents saved and \FR{} change. Intervals 95\%, except (e) 97.5\%.}
+\label{fig:reversals}
+\end{figure}
+
+\input{tables/tab_reversals}
+
+\subsection{The 12-byte code does not beat BM25}\label{sec:verdict}
+\emph{Pre-specified gate.} C1 required some arm of at most 48 bytes per document to beat BM25 by at least 2.0 pp \FR{} on RealTalk, with a 95\% interval excluding zero. Twelve cells were measured: six arms against the two BM25 analysers. None is positive (Figure~\ref{fig:verdict}a; Table~\ref{tab:c1}). At 12 bytes the code trails the coarse BM25 by \textminus{}11.04 [\textminus{}15.71, \textminus{}7.09] pp. The best cell, 48 bytes with query scaling, trails it by \textminus{}1.11 [\textminus{}2.26, 0.05]. Against the production analyser it trails by \textminus{}3.26 [\textminus{}5.80, \textminus{}0.95]. The only cell ever presented as a win was a Hit@10 difference of +2.55 [\textminus{}0.14, 5.50] against the weaker analyser. Its interval contains zero.
+
+\emph{An arm never reported before.} While assembling this paper we found one RealTalk ladder arm that had been computed but never reported: the unprojected, full-vocabulary representation with query scaling (\texttt{NOPROJ\_FULL/qscale}). Against the production BM25 it gains +2.57 [0.65, 4.13] pp \FR{}. For Hit@10 the difference is +2.27 [\textminus{}0.70, 5.44], and no significant difference was demonstrated. This arm is not compact, was found post hoc, was measured on one benchmark and was never gated. It is reported so that it is not lost, not as a finding (grey rows in Figure~\ref{fig:verdict}a; all seventeen ladder arms in Table~\ref{tab:ladder}).
+
+\emph{Expected documents opened.} On LoCoMo (Figure~\ref{fig:verdict}b), scanning without an index opens 301.35 documents on average. The 96-bit sign code opens 75.20 (median 16). The same projection kept in float opens 67.15 (median 24), and BM25 opens 63.17 (median 6). The bound for 96 routing bits is 1.00. All three retrievers remove most of the scan and sit within a few tens of percent of each other, yet each is far above what its bits would allow. The byte budget is therefore not the binding constraint; the map from query to address is.
+
+\emph{Earlier routes.} Two owner-proposed ideas had been run before this programme's audits (Figure~\ref{fig:verdict}c--d). Using the 96-bit code as a first stage and reranking its top 50 by BM25 over the original text changes \FR{} by \textminus{}0.33, +0.33 and +1.07 pp on LongMemEval, PerLTQA and LoCoMo. That is below the C3 gate's 1.0 pp on two of three. The same reranker over a float first stage does as well, so the gain belongs to the reranker. Replacing each archive's fitted vocabulary by a shared hashed encoder roughly halves \FR{}. On LongMemEval it falls from 61.48 to 29.17\%, on PerLTQA from 54.82 to 26.90\% and on LoCoMo from 41.21 to 18.59\%. The per-archive lexical statistics carry the quality.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig2_compact_vs_bm25.pdf}
+\caption{The compact code against BM25. (a)~C1 gate on RealTalk: code minus BM25 \FR{} for six arms and two BM25 analysers; open markers: the interval includes 0. Grey: the unprojected, full-vocabulary arm, which is not compact and was found post hoc. (b)~\ET{} on LoCoMo (log scale); hollow markers are bounds, not systems. (c)~Code first stage with BM25 reranking. (d)~Per-archive against shared hashed encoder.}
+\label{fig:verdict}
+\end{figure}
+
+\subsection{Memory: the vocabulary is the cost, and it compacts losslessly}\label{sec:memory}
+\emph{Where the bytes are.} A reachable-object walk from named serving roots over ten LoCoMo archives gives the following decomposition (Figure~\ref{fig:memory}a). The character vocabulary takes 16.81 MB and the word vocabulary 8.03 MB. The packed 96-bit document codes take 71.9 kB, 0.3\% of the 24.86 MB total, and the raw text 0.85 MB. The code is already negligible, so compressing it further cannot matter. The cost is the per-archive fitted encoder, and that same object carries the quality.
+
+\emph{Bit-identical compaction.} Two structural rewrites keep every output bit (Table~\ref{tab:compaction}; Figure~\ref{fig:memory}b). First, the encoder's term dictionaries were replaced by a sorted UTF-8 blob with offsets and a fixed-width key array searched by binary search. This cut vocabulary bytes by 63.6\% on LoCoMo, 62.9\% on PerLTQA and 63.5\% on LongMemEval. Over 20{,}540 query vectors there were 0 differing bits, and latency ratios were 0.92--0.95. Second, BM25 was stored as a term-major compressed sparse row with a sorted vocabulary blob. This cut its bytes by 75.7--77.5\%, with zero differing float64 scores over 10{,}975 queries. Because both changes are exact, quality was not re-measured and is claimed only as measured bit equality. Separately, the repository owner's F1--F4 chain on the encoder object graph went from 109{,}515{,}058 to 98{,}326{,}018, 59{,}958{,}658 and finally 30{,}175{,}450 bytes, 72.45\% less in total. The warm single-query median fell from 22.05 to 2.86 ms, also with bit-identical retrieval.
+
+\emph{A fair comparison.} Earlier notes compared a compacted encoder with a stock dictionary BM25 and reported a ratio of about nine. Treating both sides equally changes the picture. The stock ratio of encoder to BM25 memory is 2.17, 2.46 and 2.94 on LoCoMo, PerLTQA and LongMemEval. With both sides compacted it is 3.51, 3.76 and 4.42 (Figure~\ref{fig:memory}c). Compaction helps BM25 more than the encoder. All byte counts are reachable-object accounting, not process RSS. The stock BM25 is a plain Python implementation, never compared with Lucene or similar engines. These savings make the existing system cheaper; they do not make it better.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig3_memory.pdf}
+\caption{Memory. (a)~Resident bytes over ten LoCoMo archives (log scale). (b)~Bytes removed by the two bit-identical compactions. (c)~Encoder memory over BM25 memory with both sides stock, both compacted, and for the fused system. (d)~The owner's F1--F4 chain on the encoder object graph.}
+\label{fig:memory}
+\end{figure}
+
+\input{tables/tab_compaction}
+
+\subsection{Expected cost, policy shaping and headroom}\label{sec:reach}
+BM25's advantage on \ET{} is concentrated early: its median query opens 6 documents against 16 for the code (Figure~\ref{fig:cost}a). A policy-shaped variant penalises, after each non-gold document is opened, the remaining documents whose codes resemble it; it reads only the packed codes. It lowered the code's \ET{} from 75.20 to 74.04, a change of \textminus{}1.16 [\textminus{}2.22, \textminus{}0.15] documents, with the penalty weight $\lambda$ chosen out of fold. The same penalty applied to BM25 is rejected by leave-one-archive-out ($\lambda=0$ in every archive), so the gain comes from the code's document geometry and not from generic diversification (Figure~\ref{fig:cost}b). The arm passed its gate, but the gate named no minimum effect. The gain closes 9.7\% of the 12.03-document gap to BM25 and 1.57\% of the gap to the floor, which is too little to change any decision.
+
+The two rankings are complementary (Figure~\ref{fig:cost}c). The code reaches the first gold document strictly earlier than BM25 on 30.6\% of queries and ties on 12.6\%. A per-query oracle that always picks the better of the two would reach \ET{} 36.85. Simple alternation of the two lists gives 72.71, worse than BM25 alone. The oracle is an unattainable bound, but it shows that the code carries information BM25 lacks on about a third of queries.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig4_expected_cost.pdf}
+\caption{Expected cost on LoCoMo. (a)~Per-query documents opened: median (tick), mean (dot) and range to the 90th percentile. (b)~\ET{} of the policy-shaped penalty against its weight $\lambda$, for the code and for BM25. (c)~Share of queries on which each ranking reaches evidence first, and \ET{} of the oracle, BM25 and alternation.}
+\label{fig:cost}
+\end{figure}
+
+\subsection{Fusion: the gate failed; a post-hoc lead remains}\label{sec:fusion}
+An unweighted reciprocal-rank fusion~\citep{cormack2009rrf} of BM25 and the code had already lost on LoCoMo in an earlier configuration. There it changed \FR{} by \textminus{}4.79 [\textminus{}7.18, \textminus{}2.34] pp. The programme therefore tested two arms that can fall back to BM25 exactly. W is weighted RRF with score $1/(61+r_{\text{BM25}}) + w/(61+r_{\text{code}})$, with $w$ chosen out of fold. G is a gated switch on BM25's top score. The gate was written with a minimum effect. On LoCoMo, \ET{} had to fall by at least 5\% with a 97.5\% interval below zero. On all four benchmarks, the lower bound of the \FR{} difference had to stay above \textminus{}1.0 pp.
+
+Both arms failed (Table~\ref{tab:fusion}; Figure~\ref{fig:fusion}). W met the primary criterion, cutting LoCoMo \ET{} by 11.0\%. It failed non-inferiority on LoCoMo, \textminus{}3.90 [\textminus{}6.87, \textminus{}0.83], and on RealTalk, \textminus{}1.97 [\textminus{}5.17, 0.81]. For G, no significant difference was demonstrated anywhere.
+
+After seeing the weight grid, a fixed $w=0.1$ lowered \ET{} significantly on all four benchmarks. On LoCoMo the reduction was 2.99 [1.65, 4.12] documents. \FR{} fell on none of the four, and all its lower bounds stay above \textminus{}1.0 pp. On the all-evidence measure it gains +0.85, +0.97, +2.34 and +0.14 pp all@5 on LoCoMo, PerLTQA, LongMemEval and RealTalk. It still misses the primary threshold: the LoCoMo cut is 4.7\% against 5\%. Because $w$ was chosen after the grid was seen and every on-disk benchmark has now been looked at, this is a lead that needs a hash-committed test on unseen data, not a finding. Fusion also has a price. The query must be encoded, so the fused system needs 4.54, 4.78 and 5.43 times the memory of compact BM25.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig5_fusion.pdf}
+\caption{BM25 + code fusion against BM25. Filled circles: the gated arm with its weight chosen out of fold, which failed the gate. Diamonds: the fixed weight $w=0.1$ chosen after the grid was seen, never gated. Dashed lines: the gate's thresholds. Open markers: the interval includes 0.}
+\label{fig:fusion}
+\end{figure}
+
+\input{tables/tab_fusion}
+
+\subsection{Routes closed by measurement}
+Table~\ref{tab:closed} lists the routes that measurement has closed: fewer bits, fewer channels, a shared encoder, static reranking, unweighted fusion, adaptive penalties and out-of-fold weighted fusion. The pattern is consistent. Discarding information costs quality. Storing the same information in a smaller structure works. The remaining open question concerns the query-to-address map, not the byte budget.
+
+\input{tables/tab_closed}
+
+\section{External strands}\label{sec:external}
+\subsection{A finite, exactly solvable model of memory access}\label{sec:codex}
+A second strand, produced by another language-model system, studied a finite model. In it, sources carry hidden bits, summaries are cheaper to read than raw sources, and queries ask EXISTS, COUNT$\ge$2 or COVER. Optimal reading policies were derived with exact rational arithmetic and information-relaxation duality~\citep{brown2010information}; related work covers adaptive submodularity and stochastic probing~\citep{golovin2010adaptive,deshpande2013sbfe} and algebraic decision diagrams~\citep{hoey2013spudd}. We reviewed the strand independently.
+
+We verified all 142 of 142 manifest hashes in the first round and 116 of 116 in the second. We re-ran all 21 first-round scripts and 7 second-round commands on a different interpreter. 10 outputs were byte-identical, 11 differed only in timing or provenance fields, and 0 differed in content. This is the only place in the programme where implementer and auditor were different parties.
+
+The strand's bounds depend on the relaxation family, a naming hazard that parallels this programme's own (Figure~\ref{fig:external}a). At $N=12$ the bundled relaxation leaves a certificate gap of 19.51; full splitting with cost sharing leaves 19.86; hard non-anticipativity under a time limit leaves 15.45. Only the martingale penalty closes it to 0, which certifies an exact optimum.
+
+The second round compiled the optimal EXISTS policy at $N=12$ into a program of 20 nodes and 3{,}264 bytes. Our own re-implementation of the player, which does not import the package runtime, ran it over all 4{,}096 worlds. It gave 0 wrong answers, and the exact expected cost equalled the declared fraction 15734710706799/1000000000000. The same optimum needs 4{,}969 nodes as a value-function diagram and 527--821 as a policy diagram (Figure~\ref{fig:external}b). The lesson transfers only partly. A policy compresses when the query family and start state are fixed. llmzip's queries are unknown when its index is built, so its resident state must stay able to score any query against any document.
+
+\subsection{A parallel LongMemEval line with end-to-end answers}
+A parallel line in the same repository ran LongMemEval with a fixed protocol and an LLM reader. The reader was \texttt{gpt-5-mini} and the judge \texttt{gpt-4.1-mini}, using the benchmark's official prompts. We recomputed its headline numbers from its per-question verdict files and matched them exactly (Figure~\ref{fig:external}c--d). With stemmed BM25 retrieval the reader answered 206 of 250 questions correctly, against 221 when given the gold evidence (McNemar~\citep{mcnemar1947}, \emph{p}~=~0.028). When all gold sessions were in the top five, 92\% of answers were correct; when any were missing, 22\% were. Stemming raised all-gold@5 from 192 to 198 (\emph{p}~=~0.109). LLM query expansion looked promising on development data but was not confirmed on the frozen held-out split, where QA went from 207 to 205 (\emph{p}~=~0.84). In its audit of misses, 17 were cases where the question uses a category word and the evidence a concrete instance. Absolute accuracies from this line are not comparable with leaderboards judged by other models, only arm against arm.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig6_external.pdf}
+\caption{External strands. (a)~Certificate gap by relaxation family in the finite model. (b)~Size of the same $N=12$ optimum as value diagram, policy diagram and compiled program (log scale). (c)~Reader accuracy on LongMemEval by retrieval condition. (d)~Query expansion on development against held-out data.}
+\label{fig:external}
+\end{figure}
+
+\section{Discussion}
+Three things hold up. First, the programme's product claim did not survive a fair comparator: BM25 is better on every axis measured, and the code's cost is the fitted per-archive vocabulary, not the code. Second, two lossless compactions exist and are free to adopt. Third, and most transferable, verdicts in this domain are fragile to configuration choices that papers rarely state: the document unit, the averaged cohort, the arm family used for an ablation, the benchmark and the declared metric. A reader of a single number cannot tell which of these was fixed, and the same arms on the same data gave opposite verdicts when one of them changed.
+
+Two practical rules follow. Every reported difference should name its document unit, cohort, comparator, scorer, metric and tie rule. In an audit of this programme's own reading layer, none of 37 retrieval claims named all five fields that were checked. Every gate should declare a minimum useful effect, not only significance. The one gate in this programme without it passed an arm that closed 9.7\% of the gap it was meant to close.
+
+The only live lead is fusion with a small fixed weight. Its value is bounded by what the parallel line measured: answers follow retrieval, but the gap between the all-gold and the missing-gold conditions (92\% against 22\%) means that each point of all@5 is worth at most about 0.7 points of answer accuracy. The two lines also use different document units (sessions there, turns here). A confirmation would need unseen data, a hash-committed protocol, and a comparison against stemmed BM25.
+
+\section{Limitations and process disclosures}\label{sec:limits}
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item \textbf{Not preregistered.} Gates were written into run records before results, but none was hash-committed in advance. For the channel ablation, the only evidence of ordering is file modification times.
+\item \textbf{No independent audit of this programme's own code.} The implementer and the auditor were the same agent for everything except the review of the external strand.
+\item \textbf{All data has been seen.} Both lines have now looked at every answerable LongMemEval-S question. The parallel line's split puts 150, 250 and 100 questions in its discovery, development and locked sets. Of these, 143, 230 and 97 are inside this programme's pilot set. No unseen test set remains on disk.
+\item \textbf{Licences.} RealTalk has no published licence. LoCoMo and PerLTQA are non-commercial.
+\item \textbf{Prototype costs.} Byte counts are reachable-object accounting. The comparators are Python prototypes, not production engines.
+\item \textbf{Supersessions.} The programme's supersession ledger of 17 September records 20 entries, 8 of them retractions (Table~\ref{tab:supersession}). Its arithmetic reproduced; what broke was what numbers were compared against, what they were called and what was concluded from them.
+\item \textbf{The head researcher's own errors.} They are listed in Table~\ref{tab:corrections}. They include a published REFUTED verdict that had to be withdrawn, an unqualified subgroup result and an estimate reported as if measured.
+\end{itemize}
+
+\input{tables/tab_corrections}
+
+\section{Data and code availability}
+This paper, its claims ledger and the scripts that regenerate every figure, table and number from the ledger are public at \url{https://github.com/haliltalhaertan/llmzip-paper}. The code is released under the MIT licence; the text, figures, tables and ledger are released under CC BY 4.0. The programme's run records and code live in a private development repository. For every number, the ledger (\texttt{CLAIMS\_LEDGER.csv}) records the source file within that archive, the field read and the file's SHA-256. \texttt{build\_ledger.py} documents each extraction but needs the private archive to run. Benchmark text is not redistributed. The two external strands of Section~\ref{sec:external} are summarised only; their packages are not included.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\FloatBarrier
+\clearpage
+\appendix
+\section{Complete result tables}
+\input{tables/tab_c1}
+\input{tables/tab_n2}
+\input{tables/tab_channels}
+\input{tables/tab_ladder}
+\input{tables/tab_supersession}
+
+\end{document}

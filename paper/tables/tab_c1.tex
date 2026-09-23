@@ -1,0 +1,20 @@
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{C1 gate, all twelve cells (RealTalk, pp, 95\% intervals).}
+\label{tab:c1}
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{@{}l r l l l l@{}}
+\toprule
+& & \multicolumn{2}{c}{vs BM25, coarse analyser} & \multicolumn{2}{c}{vs BM25, production analyser} \\
+\cmidrule(lr){3-4}\cmidrule(l){5-6}
+Arm & B/doc & $\Delta$FR@3 & $\Delta$Hit@10 & $\Delta$FR@3 & $\Delta$Hit@10 \\
+\midrule
+\texttt{k96/sym} & 12 & \textminus{}11.04 [\textminus{}15.71, \textminus{}7.09] & \textminus{}8.79 [\textminus{}13.50, \textminus{}4.68] & \textminus{}13.18 [\textminus{}17.75, \textminus{}9.19] & \textminus{}15.18 [\textminus{}18.82, \textminus{}11.74] \\
+\texttt{k96/qscale} & 12 & \textminus{}11.49 [\textminus{}16.52, \textminus{}7.05] & \textminus{}5.67 [\textminus{}12.15, 0.00] & \textminus{}13.64 [\textminus{}18.64, \textminus{}9.06] & \textminus{}12.06 [\textminus{}17.55, \textminus{}6.70] \\
+\texttt{k192/sym} & 24 & \textminus{}5.34 [\textminus{}7.20, \textminus{}3.66] & \textminus{}3.55 [\textminus{}7.74, 1.14] & \textminus{}7.49 [\textminus{}9.27, \textminus{}6.08] & \textminus{}9.93 [\textminus{}12.62, \textminus{}7.26] \\
+\texttt{k192/qscale} & 24 & \textminus{}4.15 [\textminus{}6.18, \textminus{}2.21] & +0.00 [\textminus{}4.90, 5.17] & \textminus{}6.29 [\textminus{}8.67, \textminus{}4.09] & \textminus{}6.38 [\textminus{}9.94, \textminus{}2.26] \\
+\texttt{k384/sym} & 48 & \textminus{}2.42 [\textminus{}4.27, \textminus{}0.83] & \textminus{}1.14 [\textminus{}5.51, 3.13] & \textminus{}4.57 [\textminus{}6.84, \textminus{}2.16] & \textminus{}7.52 [\textminus{}10.85, \textminus{}4.29] \\
+\texttt{k384/qscale} & 48 & \textminus{}1.11 [\textminus{}2.26, 0.05] & +2.55 [\textminus{}0.14, 5.50] & \textminus{}3.26 [\textminus{}5.80, \textminus{}0.95] & \textminus{}3.83 [\textminus{}5.74, \textminus{}2.10] \\
+\bottomrule
+\end{tabular}\end{adjustbox}
+\end{table}

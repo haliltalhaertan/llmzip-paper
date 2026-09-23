@@ -1,0 +1,465 @@
+{
+ "template_literals": {
+  "n": 61,
+  "non_structural": [],
+  "all": [
+   {
+    "literal": "12",
+    "structural": true,
+    "why": "bytes per document / N=12",
+    "context": "ramme that asked whether a per-document 12-byte (96-bit) code, built from TF-IDF f"
+   },
+   {
+    "literal": "96",
+    "structural": true,
+    "why": "bits / dimensions",
+    "context": "t asked whether a per-document 12-byte (96-bit) code, built from TF-IDF features p"
+   },
+   {
+    "literal": "48",
+    "structural": true,
+    "why": "bytes",
+    "context": "e pre-specified RealTalk gate; the best 48-byte cell was     pp on \\FR{}. On LoCoM"
+   },
+   {
+    "literal": "96",
+    "structural": true,
+    "why": "bits / dimensions",
+    "context": "cell was     pp on \\FR{}. On LoCoMo the 96-bit code opens   documents before the f"
+   },
+   {
+    "literal": "256",
+    "structural": true,
+    "why": "SHA-256",
+    "context": "traced to a saved artefact with its SHA-256. Section~  describes data and methods. "
+   },
+   {
+    "literal": "1",
+    "structural": true,
+    "why": "one / BM25 k1 unit",
+    "context": "ree channels: a word TF-IDF vectorizer (1--2 grams), a character TF-IDF vectorize"
+   },
+   {
+    "literal": "-2",
+    "structural": true,
+    "why": "word 1--2 grams",
+    "context": "e channels: a word TF-IDF vectorizer (1--2 grams), a character TF-IDF vectorizer ("
+   },
+   {
+    "literal": "3",
+    "structural": true,
+    "why": "top-3 / trigram",
+    "context": "ams), a character TF-IDF vectorizer ( , 3--5 grams) and an LSA component. The con"
+   },
+   {
+    "literal": "-5",
+    "structural": true,
+    "why": "character 3--5 grams",
+    "context": "s), a character TF-IDF vectorizer ( , 3--5 grams) and an LSA component. The concat"
+   },
+   {
+    "literal": "96,192,384",
+    "structural": true,
+    "why": "k grid",
+    "context": " projected by a truncated SVD to $k\\in\\{96,192,384\\}$ dimensions or left unprojected ( ). "
+   },
+   {
+    "literal": "96",
+    "structural": true,
+    "why": "bits / dimensions",
+    "context": "cuments are stored as $k$ sign bits, so 96 dimensions give 12 bytes per document. "
+   },
+   {
+    "literal": "12",
+    "structural": true,
+    "why": "bytes per document / N=12",
+    "context": "as $k$ sign bits, so 96 dimensions give 12 bytes per document. Query scoring diffe"
+   },
+   {
+    "literal": "1.2",
+    "structural": true,
+    "why": "BM25 k1",
+    "context": " BM25 uses the textbook parameters $k_1=1.2$, $b=0.75$ over the same documents. Two"
+   },
+   {
+    "literal": "0.75",
+    "structural": true,
+    "why": "BM25 b",
+    "context": "s the textbook parameters $k_1=1.2$, $b=0.75$ over the same documents. Two BM25 anal"
+   },
+   {
+    "literal": "10",
+    "structural": true,
+    "why": "top-10",
+    "context": "d scores, with no Monte-Carlo step. Hit@10 is the probability that at least one go"
+   },
+   {
+    "literal": "2",
+    "structural": true,
+    "why": "BM25 bound constant / COUNT>=2 / N/(2K)",
+    "context": "search lower bound $\\mathrm{E}[T]\\ge N/(2K)+1/2$, where $K=\\min(2^{b},N)$ for $b$"
+   },
+   {
+    "literal": "1",
+    "structural": true,
+    "why": "one / BM25 k1 unit",
+    "context": "ch lower bound $\\mathrm{E}[T]\\ge N/(2K)+1/2$, where $K=\\min(2^{b},N)$ for $b$ rou"
+   },
+   {
+    "literal": "2",
+    "structural": true,
+    "why": "BM25 bound constant / COUNT>=2 / N/(2K)",
+    "context": " lower bound $\\mathrm{E}[T]\\ge N/(2K)+1/2$, where $K=\\min(2^{b},N)$ for $b$ routi"
+   },
+   {
+    "literal": "2",
+    "structural": true,
+    "why": "BM25 bound constant / COUNT>=2 / N/(2K)",
+    "context": "hrm{E}[T]\\ge N/(2K)+1/2$, where $K=\\min(2^{b},N)$ for $b$ routing bits and $N$ do"
+   },
+   {
+    "literal": "5,",
+    "structural": true,
+    "why": "all@5",
+    "context": "i-evidence questions we also report all@5, the fraction of queries whose gold docu"
+   },
+   {
+    "literal": "3.14",
+    "structural": true,
+    "why": "CPython 3.14.7",
+    "context": " third independent environment (CPython 3.14.7, NumPy 2.5.3, SciPy 1.18.1, scikit-le"
+   },
+   {
+    "literal": "2.5",
+    "structural": true,
+    "why": "NumPy 2.5.3",
+    "context": "dent environment (CPython 3.14.7, NumPy 2.5.3, SciPy 1.18.1, scikit-learn 1.9.1 on "
+   },
+   {
+    "literal": "1.18",
+    "structural": true,
+    "why": "SciPy 1.18.1",
+    "context": "ent (CPython 3.14.7, NumPy 2.5.3, SciPy 1.18.1, scikit-learn 1.9.1 on native Windows"
+   },
+   {
+    "literal": "1.9",
+    "structural": true,
+    "why": "scikit-learn 1.9.1",
+    "context": "NumPy 2.5.3, SciPy 1.18.1, scikit-learn 1.9.1 on native Windows) reproduced all   o"
+   },
+   {
+    "literal": "3",
+    "structural": true,
+    "why": "top-3 / trigram",
+    "context": "e from one query that flips at the rank-3 boundary under hash-seed-dependent iter"
+   },
+   {
+    "literal": "48",
+    "structural": true,
+    "why": "bytes",
+    "context": " moved magnitudes and significance. The 48-byte minus 12-byte sign contrast falls "
+   },
+   {
+    "literal": "12",
+    "structural": true,
+    "why": "bytes per document / N=12",
+    "context": "des and significance. The 48-byte minus 12-byte sign contrast falls from   to   pp"
+   },
+   {
+    "literal": "48",
+    "structural": true,
+    "why": "bytes",
+    "context": "on that mattered for the product claim, 48-byte sign against BM25, is non-signific"
+   },
+   {
+    "literal": "10",
+    "structural": true,
+    "why": "top-10",
+    "context": "els \\emph{helped}: \\FR{}     pp and Hit@10     pp. In the production configuration"
+   },
+   {
+    "literal": "96",
+    "structural": true,
+    "why": "bits / dimensions",
+    "context": "pp. In the production configuration ($k=96$, sign codes) the same comparison on th"
+   },
+   {
+    "literal": "96",
+    "structural": true,
+    "why": "bits / dimensions",
+    "context": "ion removed the character channel at $k=96$. \\FR{} changed by     pp on LongMemEva"
+   },
+   {
+    "literal": "0",
+    "structural": true,
+    "why": "lambda=0 / gap 0",
+    "context": "ls; open markers: the interval includes 0. (c)~Word-only minus all channels on Re"
+   },
+   {
+    "literal": "96",
+    "structural": true,
+    "why": "bits / dimensions",
+    "context": "lTalk, unprojected float against the $k=96$ sign code. (d)~Removing the character "
+   },
+   {
+    "literal": "95",
+    "structural": true,
+    "why": "default interval level (ledger gate.c1.ci)",
+    "context": "ments saved and \\FR{} change. Intervals 95\\          \\subsection{The 12-byte code "
+   },
+   {
+    "literal": "12",
+    "structural": true,
+    "why": "bytes per document / N=12",
+    "context": " Intervals 95\\          \\subsection{The 12-byte code does not beat BM25}  \\emph{Pr"
+   },
+   {
+    "literal": "48",
+    "structural": true,
+    "why": "bytes",
+    "context": " gate.} C1 required some arm of at most 48 bytes per document to beat BM25 by at l"
+   },
+   {
+    "literal": "10",
+    "structural": true,
+    "why": "top-10",
+    "context": "ion BM25 it gains     pp \\FR{}. For Hit@10 the difference is    , and no significa"
+   },
+   {
+    "literal": "96",
+    "structural": true,
+    "why": "bits / dimensions",
+    "context": "index opens   documents on average. The 96-bit sign code opens   (median  ). The s"
+   },
+   {
+    "literal": "96",
+    "structural": true,
+    "why": "bits / dimensions",
+    "context": " BM25 opens   (median  ). The bound for 96 routing bits is  . All three retrievers"
+   },
+   {
+    "literal": "96",
+    "structural": true,
+    "why": "bits / dimensions",
+    "context": "amme's audits (Figure~ c--d). Using the 96-bit code as a first stage and reranking"
+   },
+   {
+    "literal": "50",
+    "structural": true,
+    "why": "rerank depth",
+    "context": " as a first stage and reranking its top 50 by BM25 over the original text changes "
+   },
+   {
+    "literal": "0",
+    "structural": true,
+    "why": "lambda=0 / gap 0",
+    "context": "rs; open markers: the interval includes 0. Grey: the unprojected, full-vocabulary"
+   },
+   {
+    "literal": "96",
+    "structural": true,
+    "why": "bits / dimensions",
+    "context": "nd the word vocabulary   MB. The packed 96-bit document codes take   kB,  \\   \\emp"
+   },
+   {
+    "literal": "8",
+    "structural": true,
+    "why": "N",
+    "context": "tionaries were replaced by a sorted UTF-8 blob with offsets and a fixed-width key"
+   },
+   {
+    "literal": "0",
+    "structural": true,
+    "why": "lambda=0 / gap 0",
+    "context": "cted by leave-one-archive-out ($\\lambda=0$ in every archive), so the gain comes f"
+   },
+   {
+    "literal": "90",
+    "structural": true,
+    "why": "90th percentile",
+    "context": "ian (tick), mean (dot) and range to the 90th percentile. (b)~\\ET{} of the policy-s"
+   },
+   {
+    "literal": "1",
+    "structural": true,
+    "why": "one / BM25 k1 unit",
+    "context": " exactly. W is weighted RRF with score $1/(61+r_{\\text{BM25}}) + w/(61+r_{\\text{c"
+   },
+   {
+    "literal": "61",
+    "structural": true,
+    "why": "RRF constant",
+    "context": "actly. W is weighted RRF with score $1/(61+r_{\\text{BM25}}) + w/(61+r_{\\text{code}"
+   },
+   {
+    "literal": "61",
+    "structural": true,
+    "why": "RRF constant",
+    "context": "with score $1/(61+r_{\\text{BM25}}) + w/(61+r_{\\text{code}})$, with $w$ chosen out "
+   },
+   {
+    "literal": "0.1",
+    "structural": true,
+    "why": "fusion weight",
+    "context": "fter seeing the weight grid, a fixed $w=0.1$ lowered \\ET{} significantly on all fou"
+   },
+   {
+    "literal": "5",
+    "structural": true,
+    "why": "top-5 / 5-gram",
+    "context": "e measure it gains  ,  ,   and   pp all@5 on LoCoMo, PerLTQA, LongMemEval and Rea"
+   },
+   {
+    "literal": "0.1",
+    "structural": true,
+    "why": "fusion weight",
+    "context": "the gate. Diamonds: the fixed weight $w=0.1$ chosen after the grid was seen, never "
+   },
+   {
+    "literal": "0",
+    "structural": true,
+    "why": "lambda=0 / gap 0",
+    "context": "ds. Open markers: the interval includes 0.}         \\subsection{Routes closed by "
+   },
+   {
+    "literal": "2",
+    "structural": true,
+    "why": "BM25 bound constant / COUNT>=2 / N/(2K)",
+    "context": "rces, and queries ask EXISTS, COUNT$\\ge$2 or COVER. Optimal reading policies were"
+   },
+   {
+    "literal": "12",
+    "structural": true,
+    "why": "bytes per document / N=12",
+    "context": "this programme's own (Figure~ a). At $N=12$ the bundled relaxation leaves a certif"
+   },
+   {
+    "literal": "12",
+    "structural": true,
+    "why": "bytes per document / N=12",
+    "context": "ompiled the optimal EXISTS policy at $N=12$ into a program of   nodes and   bytes."
+   },
+   {
+    "literal": "12",
+    "structural": true,
+    "why": "bytes per document / N=12",
+    "context": "e finite model. (b)~Size of the same $N=12$ optimum as value diagram, policy diagr"
+   },
+   {
+    "literal": "1",
+    "structural": true,
+    "why": "one / BM25 k1 unit",
+    "context": "ess disclosures}   \\setlength{\\itemsep}{1pt} \\item \\textbf{Not preregistered.} Ga"
+   },
+   {
+    "literal": "17",
+    "structural": true,
+    "why": "date",
+    "context": " The programme's supersession ledger of 17 September records   entries,   of them "
+   },
+   {
+    "literal": "4.0",
+    "structural": true,
+    "why": "licence version (CC BY 4.0)",
+    "context": "les and ledger are released under CC BY 4.0. The programme's run records and code l"
+   },
+   {
+    "literal": "256",
+    "structural": true,
+    "why": "SHA-256",
+    "context": "hive, the field read and the file's SHA-256.   documents each extraction but needs "
+   }
+  ]
+ },
+ "prose_values": {
+  "placed": 212,
+  "mismatch": []
+ },
+ "table_structural_literals": {
+  "2026": "date",
+  "96": "k=96 configuration",
+  "20{,}540": "derived: sum of vocab.*.vectors = 20540"
+ },
+ "table_untraced": {
+  "tab_benchmarks.tex": [],
+  "tab_c1.tex": [],
+  "tab_channels.tex": [],
+  "tab_closed.tex": [],
+  "tab_compaction.tex": [],
+  "tab_corrections.tex": [],
+  "tab_fusion.tex": [],
+  "tab_gates.tex": [],
+  "tab_ladder.tex": [],
+  "tab_n2.tex": [],
+  "tab_reversals.tex": [],
+  "tab_supersession.tex": []
+ },
+ "citations": {
+  "cited": [
+   "armstrong2009improvements",
+   "brown2010information",
+   "charikar2002simhash",
+   "cormack2009rrf",
+   "datar2004lsh",
+   "deshpande2013sbfe",
+   "du2024perltqa",
+   "efron1979bootstrap",
+   "gao2024rabitq",
+   "ge2014opq",
+   "golovin2010adaptive",
+   "gong2013itq",
+   "hoey2013spudd",
+   "jegou2011pq",
+   "lee2025realtalk",
+   "lin2019neuralhype",
+   "maharana2024locomo",
+   "mcnemar1947",
+   "robertson2009bm25",
+   "wu2024longmemeval"
+  ],
+  "missing_from_bib": [],
+  "bib_entries": 25,
+  "check_rows": 25,
+  "cited_not_resolved": [],
+  "cited_without_check_row": []
+ },
+ "labels": {
+  "n": 28,
+  "unreferenced": []
+ },
+ "claims": {
+  "fig2a no compact cell reaches BM25": true,
+  "fig2d shared encoder roughly halves FR@3 (ratio 0.40-0.55)": true,
+  "fig3a codes are 0.3% of resident": true,
+  "fig3c compacting both widens the gap": true,
+  "fig4b BM25 control chooses lambda=0": true,
+  "fig5 post-hoc w=0.1 lowers E[T] on all four (CI below 0)": true,
+  "fig5 post-hoc FR@3 lower bounds above -1": true,
+  "fig6a martingale is 0 at every N and no other family is 0 at every N": true,
+  "reversal: projection family flips sign, both significant": true,
+  "reversal: benchmark flips sign, both significant": true,
+  "reversal: document unit flips significance": true,
+  "reversal: cohort flips significance": true,
+  "reversal: metric, E[T] better and FR@3 worse, both significant": true,
+  "tie convention reverses nothing (magnitude only, < 0.1 pp)": true,
+  "48B sign vs BM25 non-significant in all four cells": true,
+  "eleven own corrections in Table corrections": true,
+  "supersession: 8 retractions of 20": true
+ },
+ "four_labels_present": true,
+ "log": {
+  "errors": [],
+  "warnings": [],
+  "pages": 16
+ },
+ "summary": {
+  "template_non_structural_literals": 0,
+  "prose_mismatches": 0,
+  "table_untraced": 0,
+  "missing_citations": 0,
+  "unreferenced_labels": 0,
+  "claims_failed": [],
+  "log_errors": 0,
+  "log_warnings": 0
+ }
+}
